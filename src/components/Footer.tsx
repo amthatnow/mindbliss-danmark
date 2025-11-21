@@ -1,6 +1,6 @@
 import { Heart } from "lucide-react";
 
-const Footer = () => {
+function Footer() {
   return (
     <footer className="bg-card border-t border-border mt-auto" role="contentinfo">
       <div className="container mx-auto px-4 py-8">
@@ -18,6 +18,6 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
+}
 
 export default Footer;

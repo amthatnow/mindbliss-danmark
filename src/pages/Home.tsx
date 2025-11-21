@@ -3,9 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Heart, Users, BookOpen, ArrowRight } from "lucide-react";
 import heroImage from "@/assets/hero-mental-health.jpg";
-import communityImage from "@/assets/community-support.jpg";
 
-const Home = () => {
+function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero sektion */}
@@ -111,7 +110,7 @@ const Home = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <img 
-                src={communityImage} 
+                src="https://plus.unsplash.com/premium_photo-1663099908294-e235675ca558?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aGFwcHklMjB5b3VuZyUyMHBlb3BsZXxlbnwwfHwwfHx8MA%3D%3D" 
                 alt="Gruppe af glade unge mennesker der griner sammen i naturen, illustrerer fællesskab og støtte" 
                 className="rounded-2xl shadow-xl w-full h-auto"
                 loading="lazy"
@@ -161,6 +160,6 @@ const Home = () => {
       </section>
     </div>
   );
-};
+}
 
 export default Home;

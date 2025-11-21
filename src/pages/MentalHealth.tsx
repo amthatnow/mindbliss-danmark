@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { CheckCircle, Brain, Shield, Smile } from "lucide-react";
 
-const MentalHealth = () => {
+function MentalHealth() {
   return (
     <div className="min-h-screen py-12" id="main-content">
       <div className="container mx-auto px-4">
@@ -222,6 +222,6 @@ const MentalHealth = () => {
       </div>
     </div>
   );
-};
+}
 
 export default MentalHealth;

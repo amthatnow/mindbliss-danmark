@@ -8,12 +8,25 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const Navbar = () => {
+function Navbar() {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
-  const isActive = (path: string) => location.pathname === path;
-  const isCategoryActive = (paths: string[]) => paths.some(path => location.pathname.startsWith(path));
+  function isActive(path) {
+    if (location.pathname === path) {
+      return true;
+    }
+    return false;
+  }
+  
+  function isCategoryActive(paths) {
+    for (let i = 0; i < paths.length; i++) {
+      if (location.pathname.startsWith(paths[i])) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   const navLinks = [
     { path: "/mental-sundhed", label: "Mental Sundhed" },
@@ -233,6 +246,6 @@ const Navbar = () => {
     </nav>
     </>
   );
-};
+}
 
 export default Navbar;

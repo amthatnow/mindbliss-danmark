@@ -31,50 +31,58 @@ const contactSchema = z.object({
     .max(2000, { message: "Besked må maksimalt være 2000 tegn" })
 });
 
-type ContactFormData = z.infer<typeof contactSchema>;
-type FormErrors = Partial<Record<keyof ContactFormData, string>>;
 
-const Contact = () => {
-  const [formData, setFormData] = useState<ContactFormData>({
+function Contact() {
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     subject: "",
     message: ""
   });
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [touched, setTouched] = useState<Partial<Record<keyof ContactFormData, boolean>>>({});
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
 
-  const validateField = (name: keyof ContactFormData, value: string) => {
+  function validateField(name, value) {
     try {
       const fieldSchema = contactSchema.shape[name];
       fieldSchema.parse(value);
-      setErrors(prev => ({ ...prev, [name]: undefined }));
+      setErrors(prev => {
+        const newErrors = {...prev};
+        delete newErrors[name];
+        return newErrors;
+      });
       return true;
     } catch (error) {
       if (error instanceof z.ZodError) {
-        setErrors(prev => ({ ...prev, [name]: error.errors[0].message }));
+        setErrors(prev => {
+          const newErrors = {...prev};
+          newErrors[name] = error.errors[0].message;
+          return newErrors;
+        });
       }
       return false;
     }
-  };
+  }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  function handleChange(e) {
     const { id, value } = e.target;
-    setFormData(prev => ({ ...prev, [id]: value }));
+    const newData = {...formData};
+    newData[id] = value;
+    setFormData(newData);
     
-    if (touched[id as keyof ContactFormData]) {
-      validateField(id as keyof ContactFormData, value);
+    if (touched[id]) {
+      validateField(id, value);
     }
-  };
+  }
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  function handleBlur(e) {
     const { id, value } = e.target;
     setTouched(prev => ({ ...prev, [id]: true }));
-    validateField(id as keyof ContactFormData, value);
-  };
+    validateField(id, value);
+  }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  function handleSubmit(e) {
     e.preventDefault();
     
     // Marker alle felter som berørt
@@ -104,10 +112,10 @@ const Contact = () => {
       setTouched({});
     } catch (error) {
       if (error instanceof z.ZodError) {
-        const fieldErrors: FormErrors = {};
+        const fieldErrors = {};
         error.errors.forEach(err => {
           if (err.path[0]) {
-            fieldErrors[err.path[0] as keyof ContactFormData] = err.message;
+            fieldErrors[err.path[0]] = err.message;
           }
         });
         setErrors(fieldErrors);
@@ -115,10 +123,12 @@ const Contact = () => {
     }
   };
 
-  const getInputAriaProps = (fieldName: keyof ContactFormData) => ({
-    "aria-invalid": !!errors[fieldName] as boolean,
-    "aria-describedby": errors[fieldName] ? `${fieldName}-error` : undefined
-  });
+  function getInputAriaProps(fieldName) {
+    return {
+      "aria-invalid": !!errors[fieldName],
+      "aria-describedby": errors[fieldName] ? `${fieldName}-error` : undefined
+    };
+  }
 
   return (
     <div className="min-h-screen py-12" id="main-content">
@@ -392,6 +402,6 @@ const Contact = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Contact;
